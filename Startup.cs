@@ -1,23 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
-using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.AspNetCore.Http;
 
-namespace api
+namespace barakuda.api
 {
     public class Startup
     {
@@ -31,11 +20,13 @@ namespace api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.Configure<ForwardedHeadersOptions>(options =>
+
+            services.AddControllersWithViews();
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
             {
-                options.ForwardedHeaders =
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                configuration.RootPath = "ClientApp/build";
             });
         }
 
@@ -46,61 +37,34 @@ namespace api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
-
-            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
 
-            var pathToStaticFiles = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles");
-            if (!Directory.Exists(pathToStaticFiles))
+            app.UseSpa(spa =>
             {
-                Directory.CreateDirectory(pathToStaticFiles);
-            }
+                spa.Options.SourcePath = "ClientApp";
 
-            // Set up custom content types -associating file extension to MIME type
-            var provider = new FileExtensionContentTypeProvider();
-            // Add new mappings
-            provider.Mappings[".myapp"] = "application/x-msdownload";
-            provider.Mappings[".htm3"] = "text/html";
-            provider.Mappings[".image"] = "image/png";
-            // Replace an existing mapping
-            provider.Mappings[".rtf"] = "application/x-msdownload";
-            // Remove MP4 videos.
-            provider.Mappings.Remove(".mp4");
-
-            // Serve my app-specific default file, if present.
-            DefaultFilesOptions options = new DefaultFilesOptions();
-            options.DefaultFileNames.Clear();
-            options.DefaultFileNames.Add("default.html");
-            app.UseDefaultFiles(options);
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(pathToStaticFiles),
-                ContentTypeProvider = provider
-            });
-
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions()
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(pathToStaticFiles, @"images")),
-                RequestPath = new PathString("/images")
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
             });
         }
     }
