@@ -1,0 +1,3 @@
+C:\Users\przem\source\repos\Barakuda\ClientApp\obj\Debug\ClientApp.njsprojAssemblyReference.cache
+C:\Users\przem\source\repos\Barakuda\ClientApp\obj\Debug\ClientApp.njsproj.CoreCompileInputs.cache
+C:\Users\przem\source\repos\Barakuda\ClientApp\bin\Microsoft.NodejsTools.WebRole.dll
