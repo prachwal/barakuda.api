@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:53743",
-      "sslPort": 44310
+      "applicationUrl": "http://localhost:54160",
+      "sslPort": 44370
     }
   },
   "profiles": {
@@ -15,19 +15,12 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "barakuda.api": {
+    "BarakudaBlazorApp": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
-    },
-    "Production": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
-      }
     }
   }
 }

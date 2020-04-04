@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace barakuda.api
+namespace Barakuda.App
 {
     public static class Program
     {
