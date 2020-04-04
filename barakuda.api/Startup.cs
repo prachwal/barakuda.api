@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 
 namespace barakuda.api
@@ -25,7 +18,7 @@ namespace barakuda.api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllersWithViews();
@@ -38,7 +31,7 @@ namespace barakuda.api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -47,7 +40,6 @@ namespace barakuda.api
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -60,11 +52,17 @@ namespace barakuda.api
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
+            var clientAppPath = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp");
+
+            if (!Directory.Exists(clientAppPath))
+            {
+                Directory.CreateDirectory(clientAppPath);
+            }
+
             app.UseDefaultFiles();
             app.UseFileServer(new FileServerOptions
             {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "ClientApp")),
+                FileProvider = new PhysicalFileProvider(clientAppPath),
             });
         }
     }
