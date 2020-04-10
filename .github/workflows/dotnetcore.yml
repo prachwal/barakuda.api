@@ -24,7 +24,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: Publish
-      run: dotnet publish -p:PublishProfile=BarakudaBlazorApp\Properties\PublishProfiles\FolderProfile.pubxml
+      run: dotnet publish -p:PublishProfile=BarakudaBlazorApp/Properties/Publish/Profiles/FolderProfile.pubxml
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
       with:
