@@ -30,4 +30,4 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '$(solution)'
+    arguments: '-p:PublishProfile=BarakudaBlazorApp/Properties/Publish/Profiles/FolderProfile.pubxml'
