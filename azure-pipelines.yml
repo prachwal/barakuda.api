@@ -39,3 +39,11 @@ steps:
     command: 'publish'
     publishWebProjects: true
     arguments: '-p:PublishProfile=BarakudaBlazorApp/Properties/Publish/Profiles/FolderProfile.pubxml'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
