@@ -1,50 +1,33 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+# ASP.NET Core
+
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
-
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'barakuda'
-    runOptions: 'commands'
-    commands: 'whoami'
-    readyTimeout: '20000'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '$(solution)'
-    feedsToUse: 'select'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '$(solution)'
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '-p:PublishProfile=BarakudaBlazorApp/Properties/Publish/Profiles/FolderProfile.pubxml'
+    arguments: '--nologo -p:PublishProfile=BarakudaBlazorApp/Properties/Publish/Profiles/FolderProfile.pubxml'
 
-- task: ArchiveFiles@2
+- task: CopyFilesOverSSH@0
   inputs:
-    rootFolderOrFile: 'BarakudaBlazorApp\bin\Debug\netcoreapp3.1\linux-x64\publish\'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-    verbose: true
+    sshEndpoint: 'barakuda'
+    sourceFolder: 'BarakudaBlazorApp/bin/Debug/netcoreapp3.1/linux-x64/publish/'
+    contents: '**'
+    targetFolder: 'app'
+    cleanTargetFolder: true
+    readyTimeout: '20000'
