@@ -15,6 +15,14 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'barakuda'
+    runOptions: 'commands'
+    commands: 'whoami'
+    readyTimeout: '20000'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
