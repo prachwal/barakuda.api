@@ -23,8 +23,6 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v1.1
     - name: Publish
       run: dotnet publish --no-restore -p:PublishProfile=BarakudaBlazorApp/Properties/PublishProfiles/FolderProfile.pubxml 
     - uses: actions/upload-artifact@v1
