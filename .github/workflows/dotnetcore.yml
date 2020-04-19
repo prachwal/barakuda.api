@@ -24,7 +24,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: Publish
-      run: dotnet publish --no-restore -c Release --self-contained -r linux-x64 
+      run: dotnet publish --no-restore -c Release --self-contained true /p:useapphost=true -r linux-x64 
     - uses: actions/upload-artifact@v1
       with:
         name: BarakudaBlazorApp
