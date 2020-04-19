@@ -29,3 +29,11 @@ jobs:
       with:
         name: BarakudaBlazorApp
         path: BarakudaBlazorApp/bin/Debug/netcoreapp3.1/linux-x64/publish/
+
+    - name: Download artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: BarakudaBlazorApp
+        # Destination path
+        path: BarakudaBlazorApp.zip
