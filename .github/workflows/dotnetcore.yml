@@ -42,7 +42,7 @@ jobs:
       uses: garygrossgarten/github-action-scp@release
       with:
         local: BarakudaBlazorApp.zip
-        remote: BarakudaBlazorApp.zip
+        remote: app/
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
