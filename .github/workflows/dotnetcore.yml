@@ -37,3 +37,12 @@ jobs:
         name: BarakudaBlazorApp
         # Destination path
         path: BarakudaBlazorApp.zip
+        
+    - name: Copy single file to remote
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: BarakudaBlazorApp.zip
+        remote: BarakudaBlazorApp.zip
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.PASSWORD }}
