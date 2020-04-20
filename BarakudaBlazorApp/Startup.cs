@@ -1,22 +1,23 @@
+using Barakuda.App.Data;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Barakuda.App.Data;
 
 namespace Barakuda.App
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup( IConfiguration configuration )
         {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
-        public static void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices( IServiceCollection services )
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
@@ -24,15 +25,15 @@ namespace Barakuda.App
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure( IApplicationBuilder app, IWebHostEnvironment env )
         {
-            if (env.IsDevelopment())
+            if ( env.IsDevelopment() )
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler( "/Error" );
                 app.UseHsts();
             }
 
@@ -40,11 +41,10 @@ namespace Barakuda.App
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseEndpoints( endpoints => {
                 endpoints.MapBlazorHub();
-                endpoints.MapFallbackToPage("/_Host");
-            });
+                endpoints.MapFallbackToPage( "/_Host" );
+            } );
         }
     }
 }
