@@ -28,7 +28,7 @@ jobs:
     - name: Pack
       run: dotnet pack --configuration Release
     - name: Publish
-      run: dotnet nuget push "bin/Release/barakuda.api.1.0.0.nupkg" --source "github" 
+      run: dotnet nuget push "BarakudaBlazorApp/bin/Release/barakuda.api.1.0.0.nupkg" --source "github" 
     - uses: actions/upload-artifact@v1
       with:
         name: BarakudaBlazorApp
