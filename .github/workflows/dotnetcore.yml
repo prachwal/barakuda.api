@@ -26,9 +26,11 @@ jobs:
     - name: Publish
       run: dotnet publish --no-restore -p:PublishProfile=BarakudaBlazorApp/Properties/PublishProfiles/FolderProfile.pubxml 
     - name: Pack
-      run: dotnet pack --configuration Release
+      run: dotnet pack --configuration Release --version-suffix action-testing -o "./packages"
     - name: Publish
-      run: dotnet nuget push "BarakudaBlazorApp/bin/Release/barakuda.api.1.0.0.nupkg" --source "github" 
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.NUGET_AUTH_TOKEN}}
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package -k $NUGET_AUTH_TOKEN ./packages/*.nupkg
     - uses: actions/upload-artifact@v1
       with:
         name: BarakudaBlazorApp
