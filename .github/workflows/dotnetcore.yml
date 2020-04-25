@@ -30,7 +30,7 @@ jobs:
     - name: Publish
       env:
         NUGET_AUTH_TOKEN: ${{secrets.NUGET_AUTH_TOKEN}}
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package -k $NUGET_AUTH_TOKEN ./packages/*.nupkg
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package -k $NUGET_AUTH_TOKEN packages/barakuda.api.1.0.0-action-testing.nupkg
     - uses: actions/upload-artifact@v1
       with:
         name: BarakudaBlazorApp
